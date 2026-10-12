@@ -112,6 +112,8 @@ Next priorities are a clean GPU installation check and an independently labelled
 evaluation set. Development continues in this repository; the current
 implementation is intentionally presented as a prototype.
 
+For ongoing changes, see [development and publication checks](CONTRIBUTING.md).
+
 ## Repository guide
 
 | Location | Purpose |

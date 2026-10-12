@@ -5,6 +5,8 @@
 On 12 October 2026, the local checkout passed **114 Python tests and 6
 JavaScript tests**. Tests use synthetic video and injected model outputs; they
 exercise application behaviour without downloading weights or requiring a GPU.
+The lightweight Python setup and synthetic demo were also verified in a new
+virtual environment on the development PC, with no inference packages installed.
 The GitHub Actions workflow runs these checks on Windows with Python 3.11,
 Node.js and FFmpeg. Its badge reports the remote workflow's actual status.
 
