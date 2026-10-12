@@ -10,12 +10,12 @@ uploads, athlete selection, background processing and experimental skill analysi
 **Status:** working prototype, actively developed. Pose accuracy and skill
 estimates still need independent labelled evaluation. See the [roadmap](docs/ROADMAP.md).
 
-## Demo — RedTuckBacks
+## Demo — Tuck Back Somersalts Getting Tighter
 
-![RedTuckBacks: real-video pose tracking demonstration](docs/assets/red-tuck-backs.gif)
+![Tuck Back SomerSalts Getting Tighter: real-video pose tracking demonstration](docs/assets/red-tuck-backs.gif)
 
 [Watch the demo video](docs/assets/red-tuck-backs.mp4). This is an actual
-tracking output from the RedTuckBacks development clip. The preview is cropped
+tracking output from a development clip. The preview is cropped
 and resized for presentation, with audio and metadata removed. It illustrates
 current behaviour on one clip, not general pose or skill-classification accuracy.
 See [demo details](docs/DEMO.md).
