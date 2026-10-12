@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Flightroom · Video inbox</title>
+  <link rel="stylesheet" href="/assets/style.css">
+  <link rel="stylesheet" href="/assets/skills.css">
+  <script src="/assets/skills.js" defer></script>
+  <script src="/assets/app.js" defer></script>
+</head>
+<body>
+  <header><a class="brand" href="/" aria-label="Flightroom home"><span class="mark">F</span> flightroom<span class="brand-note">TRAMPOLINE TRACKING</span></a><div class="header-right"><a class="quiet" href="/skills">Skill Analysis</a><span class="private"><span class="dot"></span> Personal video inbox</span><button id="logout" class="quiet" hidden>Lock inbox</button></div></header>
+  <main>
+    <section id="login-panel" class="login panel">
+      <span class="eyebrow">VIDEO TRACKING</span><h1>Open your video inbox</h1>
+      <p>Enter your access key to upload and track a trampoline video.</p>
+      <form id="login-form"><label for="access-key">Inbox access key</label><input id="access-key" type="password" autocomplete="current-password" required placeholder="Paste the key from your processing PC"><button class="primary" type="submit">Unlock inbox <span>→</span></button></form>
+      <p class="small">Your key is saved in <code>.portal/access-key.txt</code> on the processing PC.</p>
+    </section>
+    <section id="workspace" hidden>
+      <div class="intro"><div><span class="eyebrow">VIDEO TRACKING</span><h1>Track a gymnast</h1><p>Upload a video, choose a clear frame, and draw a box around the gymnast. Then select Start tracking.</p></div><span class="pill">Processed on your PC</span></div>
+      <div class="layout">
+        <aside>
+          <section class="panel upload-panel"><div class="section-label"><span>01</span> UPLOAD VIDEO</div><h2>Upload a video</h2><p>Choose the original video file.<br>Maximum size: 2 GiB.</p>
+            <label class="drop-zone" id="drop-zone"><span class="upload-symbol">↑</span><strong>Choose a video</strong><span>or drop it here</span><input id="file-input" type="file" accept="video/*,.mkv,.avi"></label>
+            <div id="upload-progress" hidden><progress id="upload-bar" max="100" value="0"></progress><p id="upload-message" class="small" aria-live="polite"></p></div>
+            <p class="small">Keep this page open until the upload finishes. Then select the gymnast to track.</p>
+          </section>
+          <section class="inbox"><div class="list-title"><h2>Your videos</h2><span id="job-count">0</span></div><div id="job-list"></div><p id="empty-list" class="small">Uploaded videos will appear here. Select one to track or review.</p></section>
+        </aside>
+        <section class="panel editor">
+          <div id="empty-editor"><div class="empty-art"><span>↗</span></div><span class="eyebrow">GET STARTED</span><h2>Upload a video to begin</h2><p>Use Choose a video or drop a file in the upload area.<br>Then choose a frame and draw a box around the gymnast.</p><div class="flow"><span>Upload</span><b>→</b><span>Select gymnast</span><b>→</b><span>Track</span></div></div>
+          <div id="job-editor" hidden>
+            <div class="editor-heading"><div><div class="section-label"><span>02</span> SELECT GYMNAST</div><h2 id="video-name"></h2></div><span class="pill" id="job-state"></span></div>
+            <div id="job-status" class="status" aria-live="polite"></div><progress id="job-progress" hidden></progress>
+            <div id="resume-panel" hidden><p>This upload has not finished. Choose the same file again to retry from the beginning, or delete this entry.</p></div>
+            <button id="retry-prepare" class="secondary" hidden>Retry preparing frames</button>
+            <div id="selection-panel" hidden>
+              <div class="step-heading"><h3>1. Choose a clear frame</h3><span id="frame-time" class="mono"></span></div>
+              <p class="hint">Use the slider or frame buttons to find a frame with the whole gymnast visible and separate from other people.</p>
+              <div class="canvas-shell"><canvas id="frame-canvas" aria-label="Selected frame. Drag a box around the gymnast; drag its corners to resize." tabindex="0"></canvas><div id="frame-loading" hidden>Loading frame…</div></div>
+              <input id="frame-slider" type="range" min="0" max="0" value="0" step="1" aria-label="Choose a frame">
+              <div class="frame-controls"><button id="previous-frame" class="secondary" aria-label="Previous frame">← <span>Previous</span></button><label>Frame <input id="frame-number" type="number" min="1" value="1" aria-label="Frame number"> <span id="frame-total"></span></label><button id="next-frame" class="secondary" aria-label="Next frame"><span>Next</span> →</button></div>
+              <div class="box-heading"><div><h3>2. Draw a box around the gymnast</h3><p class="hint">Include the whole body, hands, and feet. Drag inside the box to move it or drag a corner to resize.</p></div><button id="clear-box" class="quiet">Clear box</button></div>
+              <div class="box-tools"><button id="corner-mode" class="secondary" aria-pressed="false">Tap two corners instead</button><span id="box-status" class="small" aria-live="polite">No box selected</span></div>
+              <details id="coordinate-details"><summary>Edit box coordinates (pixels)</summary><div class="coordinates"><label>Left<input id="box-x1" type="number" min="0"></label><label>Top<input id="box-y1" type="number" min="0"></label><label>Right<input id="box-x2" type="number" min="0"></label><label>Bottom<input id="box-y2" type="number" min="0"></label></div><button id="apply-box" class="secondary">Apply coordinates</button></details>
+              <div class="selection-footer"><p class="small">Select Start tracking to track this gymnast throughout the video, before and after the selected frame.</p><button id="start-processing" class="primary" disabled>Start tracking <span>↗</span></button></div>
+            </div>
+            <div id="results-panel" hidden><h3>Review the tracking</h3><p class="hint">Play the video and check that the skeleton follows the selected gymnast throughout. Check for errors when the body is hidden or the pose changes.</p><video id="result-video" controls playsinline preload="metadata"></video><div class="downloads"><a id="download-video" class="primary">Download tracking video</a><a id="download-json" class="secondary">Download joints (JSON)</a><a id="download-csv" class="secondary">Download joints (CSV)</a></div>
+              <section id="embedded-skills" class="skill-main embedded-skills" aria-label="Skill analysis">
+                <div id="analysis-panel" hidden>
+                  <div class="editor-heading"><h2>Skill analysis</h2><span id="analysis-state" class="pill"></span></div>
+                  <p id="analysis-message" class="status" role="status" aria-live="polite"></p>
+                  <button id="start-analysis" class="primary" hidden>Run skill analysis</button>
+                  <div id="analysis-results" hidden>
+                    <p class="hint">Review the estimates below. Select Jump to skill to see its start in the video.</p>
+                    <div class="downloads"><a id="download-skills-json" class="secondary">Download skills (JSON)</a><a id="download-skills-csv" class="secondary">Download skills (CSV)</a></div>
+                    <div id="skill-list" class="skill-list"></div>
+                  </div>
+                </div>
+              </section>
+            </div>
+            <div class="job-footer"><span class="small">Delete video removes the uploaded copy and its results from this PC.</span><button id="delete-job" class="danger quiet">Delete video</button></div>
+          </div>
+        </section>
+      </div>
+    </section>
+    <div id="notice" role="alert" hidden></div>
+  </main>
+  <footer>FLIGHTROOM <span>Trampoline video tracking</span></footer>
+</body>
+</html>

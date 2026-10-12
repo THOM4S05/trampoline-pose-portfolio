@@ -1,0 +1,33 @@
+name: Tests
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install FFmpeg
+        run: choco install ffmpeg --version=8.0.1 -y --no-progress
+      - name: Install lightweight dependencies
+        run: python -m pip install -r requirements-dev.txt
+      - name: Python tests
+        run: python -m pytest -q
+      - name: Public file guard
+        run: python scripts/check-publication.py --ref HEAD
+      - name: Browser logic tests
+        run: node --test tests/skill_navigation.test.cjs
+      - name: Synthetic pipeline demo
+        run: python examples/synthetic_demo.py

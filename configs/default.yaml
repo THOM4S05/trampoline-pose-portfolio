@@ -1,0 +1,24 @@
+# Paths are relative to this YAML file. Detector runs on every source frame.
+model_directory: ../models
+device: cuda:0
+detection_score: 0.3
+detector_rotations: [0]
+joint_score: 0.3
+crop_padding: 1.25
+association_distance: 1.5
+association_margin: 0.12
+max_association_cost: 0.65
+minimum_seed_scale: 0.4
+maximum_seed_scale: 2.5
+reacquisition_distance: 1.5
+reacquisition_cost: 0.9
+automatic_reacquisition: true
+late_reacquisition_appearance: 0.35
+late_reacquisition_confirmations: 3
+uncertain_ms: 200.0
+# Beyond this gap, recovery uses stronger appearance checks and three detections.
+reacquisition_ms: 500.0
+# Disabled until a labelled validation set demonstrates improvement.
+temporal_refinement: false
+max_gap_ms: 100.0
+max_gap_frames: 3

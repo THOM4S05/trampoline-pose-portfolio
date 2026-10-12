@@ -1,0 +1,18 @@
+# Development configuration for 20250405_102511.mp4; accuracy is unlabelled.
+model_directory: ../models
+device: cuda:0
+detection_score: 0.3
+detector_rotations: [0, 90, 180, 270]
+joint_score: 0.3
+crop_padding: 1.25
+association_distance: 1.5
+association_margin: 0.12
+max_association_cost: 0.8
+minimum_seed_scale: 0.4
+maximum_seed_scale: 2.5
+reacquisition_distance: 1.0
+uncertain_ms: 200.0
+reacquisition_ms: 500.0
+temporal_refinement: false
+max_gap_ms: 100.0
+max_gap_frames: 3

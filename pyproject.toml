@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools==69.5.1", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "trampoline-pose"
+version = "0.1.0"
+description = "Standalone offline single-athlete 2D joint tracker"
+readme = "README.md"
+license = {file = "LICENSE"}
+requires-python = ">=3.11,<3.12"
+dependencies = ["numpy==1.26.4", "scipy==1.11.4", "opencv-python==4.9.0.80", "av==12.3.0", "PyYAML==6.0.2", "jsonschema==4.23.0", "psutil==6.1.1"]
+
+[project.optional-dependencies]
+web = ["Flask==3.1.3", "waitress==3.0.2", "Werkzeug==3.1.9"]
+
+[project.urls]
+Repository = "https://github.com/THOM4S05/trampoline-pose-portfolio"
+Issues = "https://github.com/THOM4S05/trampoline-pose-portfolio/issues"
+
+[project.scripts]
+trampoline-pose = "trampoline_pose.cli:main"
+trampoline-portal = "trampoline_pose.portal:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+trampoline_pose = ["schema.json", "web/*.html", "web/*.css", "web/*.js"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]

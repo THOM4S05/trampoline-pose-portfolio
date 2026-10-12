@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Flightroom · Skill Analysis</title>
+  <link rel="stylesheet" href="/assets/style.css">
+  <link rel="stylesheet" href="/assets/skills.css">
+  <script src="/assets/skills.js" defer></script>
+</head>
+<body>
+  <header><a class="brand" href="/" aria-label="Flightroom home"><span class="mark">F</span> flightroom<span class="brand-note">TRAMPOLINE TRACKING</span></a><div class="header-right"><a class="quiet" href="/">Video inbox</a><span class="private"><span class="dot"></span> Processed on your PC</span><button id="logout" class="quiet" hidden>Lock inbox</button></div></header>
+  <main>
+    <section id="login-panel" class="login panel" hidden><span class="eyebrow">SKILL ESTIMATES</span><h1>Skill Analysis</h1><p>Enter your inbox access key to view tracked videos and estimate their skills.</p><form id="login-form"><label for="access-key">Inbox access key</label><input id="access-key" type="password" autocomplete="current-password" required><button class="primary" type="submit">Unlock inbox</button></form></section>
+    <section id="workspace" hidden>
+      <div class="intro"><div><span class="eyebrow">SKILL ESTIMATES</span><h1>Skill Analysis</h1><p>Select a tracked video, then run skill analysis to estimate rotations and body shape for each flight.</p></div><span class="pill">Estimates require review</span></div>
+      <div class="layout">
+        <aside class="panel skill-picker"><h2>Tracked videos</h2><p class="small">Only videos with completed pose tracking can be analysed.</p><div id="job-list"></div><p id="empty-list" class="small" hidden>No tracked videos yet. <a href="/">Open the video inbox</a> to process one.</p></aside>
+        <section class="panel skill-main"><div id="empty-selection"><h2>Choose a video</h2><p>Select a video from Tracked videos to run analysis or review saved results.</p></div><div id="analysis-panel" hidden><div class="editor-heading"><h2 id="video-name"></h2></div><video id="result-video" controls playsinline preload="metadata" aria-label="Tracking video"></video><div class="editor-heading"><h2>Skill analysis</h2><span id="analysis-state" class="pill"></span></div><p id="analysis-message" class="status" role="status" aria-live="polite"></p><button id="start-analysis" class="primary" hidden>Run skill analysis</button><div id="analysis-results" hidden><p class="hint">Select Jump to skill to see its start in the video. Review each flight’s estimated rotation and body shape. Check the tracking and estimated trampoline contact times; the intended skill is not confirmed.</p><div class="downloads"><a id="download-skills-json" class="secondary">Download skills (JSON)</a><a id="download-skills-csv" class="secondary">Download skills (CSV)</a></div><div id="skill-list" class="skill-list"></div></div></div></section>
+      </div>
+    </section>
+    <div id="notice" role="alert" hidden></div>
+  </main>
+  <footer>FLIGHTROOM <span>Trampoline video tracking</span></footer>
+</body>
+</html>

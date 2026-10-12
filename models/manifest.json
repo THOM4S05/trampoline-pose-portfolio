@@ -1,0 +1,20 @@
+{
+  "pose": {
+    "package": "mmpose",
+    "name": "td-hm_ViTPose-small_8xb64-210e_coco-256x192",
+    "config_relative": "configs/body_2d_keypoint/topdown_heatmap/coco/td-hm_ViTPose-small_8xb64-210e_coco-256x192.py",
+    "checkpoint": "models/checkpoints/vitpose-small.pth",
+    "checkpoint_sha256": "62d7a7128f13a63ec63d7319ea705c9822883ebf75130832cccdcb54313ddb13",
+    "upstream_url": "https://download.openmmlab.com/mmpose/v1/body_2d_keypoint/topdown_heatmap/coco/td-hm_ViTPose-small_8xb64-210e_coco-256x192-62d7a712_20230314.pth",
+    "config_sha256": "db3c5c5acdb216e6679f9dfcda977144ac7188fa3e6888958a05cd5d1ba4d3f3"
+  },
+  "detector": {
+    "package": "mmdet",
+    "name": "rtmdet_tiny_8xb32-300e_coco",
+    "config_relative": "configs/rtmdet/rtmdet_tiny_8xb32-300e_coco.py",
+    "checkpoint": "models/checkpoints/rtmdet-tiny.pth",
+    "checkpoint_sha256": "78e30dcce0c6f594eaff0d6977b84b4103688b4aff0ad1aa16008a8cc854a7fb",
+    "upstream_url": "https://download.openmmlab.com/mmdetection/v3.0/rtmdet/rtmdet_tiny_8xb32-300e_coco/rtmdet_tiny_8xb32-300e_coco_20220902_112414-78e30dcc.pth",
+    "config_sha256": "873923f8221c2e5ae6501dae248eddf26743daeccb82ae9055cb6435fcabc992"
+  }
+}

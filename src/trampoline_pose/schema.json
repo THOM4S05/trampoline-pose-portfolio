@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://trampoline-pose.local/schema/1.0.0",
+  "title": "Trampoline pose export 1.0.0",
+  "type": "object",
+  "required": ["schema_version","source","processed_frame_count","coordinate_convention","score_semantics","skeleton","models","package_version","dependencies","effective_config","selection","frames","diagnostics"],
+  "properties": {
+    "schema_version": {"const":"1.0.0"},
+    "source": {"type":"object","required":["sha256","display_width","display_height","rotation_handling","source_time_base"]},
+    "processed_frame_count": {"type":"integer","minimum":1},
+    "coordinate_convention": {"type":"string"},
+    "score_semantics": {"type":"string"},
+    "skeleton": {"type":"object","required":["name","version","keypoint_names","edges","side_convention"]},
+    "models": {"type":"object"},
+    "package_version": {"type":"string"},
+    "dependencies": {"type":"object"},
+    "effective_config": {"type":"object"},
+    "selection": {"type":"object"},
+    "diagnostics": {"type":"object"},
+    "frames": {"type":"array","minItems":1,"items":{"$ref":"#/$defs/frame"}}
+  },
+  "$defs": {
+    "coordinate": {"type":["number","null"]},
+    "point": {"type":"object","required":["x","y"],"properties":{"x":{"$ref":"#/$defs/coordinate"},"y":{"$ref":"#/$defs/coordinate"}}},
+    "joint": {
+      "type":"object","required":["raw","final","status","visibility","confidence","flags","correction_displacement_pixels"],
+      "properties": {
+        "raw": {"allOf":[{"$ref":"#/$defs/point"},{"required":["model_score"],"properties":{"model_score":{"type":["number","null"]}}}]},
+        "final":{"$ref":"#/$defs/point"},
+        "status":{"enum":["observed","corrected","inferred","missing"]},
+        "visibility":{"enum":["unknown","out_of_frame"]},
+        "confidence":{"type":"null"},
+        "flags":{"type":"array","items":{"type":"string"}},
+        "correction_displacement_pixels":{"type":["number","null"]}
+      }
+    },
+    "frame": {
+      "type":"object","required":["frame_index","timestamp_seconds","source_pts","source_time_base","track_id","track_state","bbox_xyxy","crop_transform","joints","derived_landmarks","diagnostics"],
+      "properties": {
+        "frame_index":{"type":"integer","minimum":0},
+        "timestamp_seconds":{"type":"number","minimum":0},
+        "source_pts":{"type":"integer"},
+        "source_time_base":{"type":"string"},
+        "track_id":{"const":"gymnast_1"},
+        "track_state":{"enum":["tracked","uncertain","lost"]},
+        "bbox_xyxy":{"oneOf":[{"type":"null"},{"type":"array","minItems":4,"maxItems":4,"items":{"type":"number"}}]},
+        "crop_transform":{"type":["object","null"]},
+        "joints": {
+          "type":"object","minProperties":17,"maxProperties":17,
+          "required":["nose","left_eye","right_eye","left_ear","right_ear","left_shoulder","right_shoulder","left_elbow","right_elbow","left_wrist","right_wrist","left_hip","right_hip","left_knee","right_knee","left_ankle","right_ankle"],
+          "additionalProperties":{"$ref":"#/$defs/joint"}
+        },
+        "derived_landmarks":{"type":"object"},
+        "diagnostics":{"type":"object"}
+      }
+    }
+  }
+}
