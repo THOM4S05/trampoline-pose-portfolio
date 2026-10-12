@@ -2,43 +2,48 @@
 
 [![Tests](https://github.com/THOM4S05/trampoline-pose-portfolio/actions/workflows/tests.yml/badge.svg)](https://github.com/THOM4S05/trampoline-pose-portfolio/actions/workflows/tests.yml)
 
-**An experimental computer-vision application for reviewing trampoline routines.**
-Select an athlete in a video, track 17 body landmarks, and export a skeleton
-review video plus timestamped JSON and CSV. A private browser inbox handles
-uploads, athlete selection, background processing and experimental skill analysis.
+I'm building this to make trampoline videos easier to review. You pick an
+athlete in a clip, and the app follows them through the routine, draws a
+skeleton over the video, and saves the joint positions as JSON or CSV.
 
-**Status:** working prototype, actively developed. Pose accuracy and skill
-estimates still need independent labelled evaluation. See the [roadmap](docs/ROADMAP.md).
+There's also a browser interface for uploading clips, choosing the athlete
+and reviewing the results. I've started adding skill analysis to estimate
+somersault rotation and body shape, though that part still needs work.
 
-## Demo — Tuck Back Somersalts Getting Tighter
+**This is a working prototype that I'm continuing to develop.** It can produce
+useful review videos, but difficult poses can still confuse the tracker.
+The [roadmap](docs/ROADMAP.md) covers what I'd like to improve next.
 
-![Tuck Back SomerSalts Getting Tighter: real-video pose tracking demonstration](docs/assets/red-tuck-backs.gif)
+## Demo — Tuck back somersaults getting tighter
 
-[Watch the demo video](docs/assets/red-tuck-backs.mp4). This is an actual
-tracking output from a development clip. The preview is cropped
-and resized for presentation, with audio and metadata removed. It illustrates
-current behaviour on one clip, not general pose or skill-classification accuracy.
-See [demo details](docs/DEMO.md).
+![Tuck back somersaults getting tighter, with predicted skeleton overlay](docs/assets/red-tuck-backs.gif)
 
-## What the project implements
+[Watch the demo video](docs/assets/red-tuck-backs.mp4). The skeleton comes from
+the tracker's predictions on a development clip. I've cropped and resized the preview
+and removed the audio and recording metadata. This is one of the clips used
+during development, so it shows how the project is progressing rather than
+serving as an independent accuracy test. More in the [demo notes](docs/DEMO.md).
 
-- **Athlete tracking:** forwards and backwards from a selected frame, with motion,
-  appearance and scale checks, explicit uncertain/lost states, and reacquisition.
-- **Video correctness:** native presentation timestamps, display rotation, mapped
-  crop coordinates, streaming processing and matching overlay timing.
-- **Reviewable outputs:** all 17 COCO joints per frame, raw predictions, explicit
-  missing values, diagnostics, provenance and JSON schema validation.
-- **Browser workflow:** chunked uploads, exact-frame selection, a single processing
-  queue, restart recovery and authenticated downloads.
-- **Experimental analysis:** contact proxies, projected somersault rotation and
-  body-shape evidence, with reasons to review uncertain results. Twist is deferred.
+## What it does
 
-The pretrained detector and pose estimator are **RTMDet-tiny and ViTPose-S**,
-accessed through OpenMMLab. The project work is the tracking, video pipeline,
-application, analysis heuristics and validation around those models; it does
-not include training a new pose model. See [third-party attribution](THIRD_PARTY.md).
+- Follows the selected athlete forwards and backwards through a clip, and tries
+  to find them again after an occlusion. Uncertain or lost tracking is marked.
+- Keeps the video's original frame timing and handles display rotation, so the
+  exported coordinates and skeleton overlay line up with the source.
+- Exports all 17 COCO body landmarks per frame, including the raw predictions,
+  missing values and information about how each result was produced.
+- Lets you upload, select, process and review clips through a private browser
+  interface. Processing runs in a queue, with results saved between sessions.
+- Estimates trampoline contact times, somersault rotation and body shape.
+  These estimates need video review; twist estimation isn't implemented yet.
 
-## Try the pipeline without a GPU
+The project uses pretrained **RTMDet-tiny and ViTPose-S** models through
+OpenMMLab. My focus here is on turning those models into a usable application:
+keeping track of the right athlete, handling the video correctly, building the
+review interface and testing the pipeline. I haven't trained a new pose model.
+See [third-party attribution](THIRD_PARTY.md) for the upstream projects.
+
+## Try it without a GPU
 
 Requirements: **Python 3.11**, FFmpeg/ffprobe on PATH, and optionally Node.js to
 run the browser logic tests. These commands use PowerShell on Windows:
@@ -53,17 +58,19 @@ py -3.11 -m venv .venv
 node --test tests/skill_navigation.test.cjs
 ```
 
-The synthetic example writes `source.mp4`, `overlay.mp4`, `preview.gif`,
-`joints.json` and `joints.csv` under `outputs/synthetic-demo/`. It uses generated
-coordinates and an injected backend, so no weights, CUDA or athlete recordings
-are needed. It demonstrates export behaviour, not model inference. Install
-FFmpeg 8.0.1 for the tested codec suite; see [setup](docs/TRACKER.md#environment).
+This example generates a stick figure and runs known joint coordinates through
+the tracking and export code. You can try the pipeline without downloading
+model weights or setting up CUDA; it doesn't run pose estimation on real footage.
+The resulting video, GIF, JSON and CSV files are saved in `outputs/synthetic-demo/`.
+Use FFmpeg 8.0.1 to match the tested setup; see the
+[setup guide](docs/TRACKER.md#environment).
 
 ## Process your own video
 
-The full inference environment is pinned for **Windows x64, Python 3.11 and
-CUDA 11.8**, developed on a GTX 1070. Setup downloads several GB of dependencies
-and model weights. A clean second-machine GPU setup remains unverified.
+I've been running the full tracker on Windows with a GTX 1070. The dependencies
+are pinned for **Windows x64, Python 3.11 and CUDA 11.8**. Setup downloads
+several GB of packages and model weights, and I still need to check the full
+GPU setup on a second machine.
 
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\setup.ps1
@@ -78,7 +85,7 @@ The inbox is designed for a local machine or private network.
 See the [browser guide](docs/VIDEO-INBOX.md) for the complete flow and
 [CLI/API reference](docs/TRACKER.md) for scripted processing.
 
-## Design
+## How it works
 
 ```mermaid
 flowchart LR
@@ -90,27 +97,30 @@ flowchart LR
     F --> G[Experimental skill evidence]
 ```
 
-Detection caching allows association changes to be reviewed without repeating
-expensive detection. Separate raw and accepted coordinates preserve evidence
-when a prediction is missing or uncertain. The portal serializes preparation
-and GPU work through one worker to bound concurrent resource use.
+Finding people in every frame is expensive, so the app caches those detections.
+That makes it possible to adjust the athlete-tracking logic without running
+the detector again. It also keeps raw predictions alongside accepted joint
+positions, so there's something to inspect when a result looks wrong.
 
-## Validation and next steps
+Video preparation and GPU processing share a single worker. This keeps several
+uploads from trying to use the GPU at once.
 
-The local suite passed **114 Python tests and 6 JavaScript tests** on
-12 October 2026. It covers timing, rotation, association, recovery, exports,
-request validation, video codecs and analysis/navigation behaviour. The
-[Actions page](https://github.com/THOM4S05/trampoline-pose-portfolio/actions) shows CI results.
+## Testing and what's next
 
-Real GPU runs have been exercised locally, including a 779-frame development
-routine. Those development runs do not establish general accuracy. Inverted
-poses, occlusion and anatomical left/right identity remain difficult. See
-[validation evidence and limitations](docs/VALIDATION.md) and the
-[analysis method](docs/skill-identification-baseline.md).
+The published version passed **114 Python tests and 6 JavaScript tests** on
+12 October 2026. These check things like frame timing, rotation, tracking
+recovery, exports, uploads and browser controls. GitHub runs the checks on each
+push; the [Actions page](https://github.com/THOM4S05/trampoline-pose-portfolio/actions)
+has the latest results.
 
-Next priorities are a clean GPU installation check and an independently labelled
-evaluation set. Development continues in this repository; the current
-implementation is intentionally presented as a prototype.
+I've also run the models on real footage, including a 779-frame routine.
+The harder cases are still inverted poses, limbs hidden from the camera and
+keeping anatomical left and right correct. Passing software tests doesn't
+tell me how accurate those predictions are, so a next step is to compare them
+against independently labelled routines.
+
+More detail is in the [validation notes](docs/VALIDATION.md) and
+[skill analysis notes](docs/skill-identification-baseline.md).
 
 For ongoing changes, see [development and publication checks](CONTRIBUTING.md).
 
