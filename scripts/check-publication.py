@@ -17,6 +17,7 @@ MEDIA = {'.mp4', '.mov', '.m4v', '.avi', '.mkv', '.webm', '.jpg', '.jpeg', '.png
 APPROVED_MEDIA = {
     'docs/assets/red-tuck-backs.mp4', 'docs/assets/red-tuck-backs.gif',
     'docs/assets/upload-demo.mp4', 'docs/assets/analysis-demo.mp4',
+    'docs/assets/upload-demo.gif', 'docs/assets/analysis-demo.gif',
 }
 PATTERNS = {
     'private key': rb'-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----',

@@ -16,10 +16,17 @@ The [roadmap](docs/ROADMAP.md) covers what I'd like to improve next.
 
 ## Demos — Upload and analysis
 
-See the browser interface in action:
+**Upload a clip and select the athlete**
 
-- [Watch the upload demo](docs/assets/upload-demo.mp4)
-- [Watch the analysis demo](docs/assets/analysis-demo.mp4)
+![Upload demo: uploading a clip and selecting the athlete](docs/assets/upload-demo.gif)
+
+[Watch the full upload video](docs/assets/upload-demo.mp4)
+
+**Review the tracking and skill analysis**
+
+![Analysis demo: reviewing the skeleton overlay and skill analysis](docs/assets/analysis-demo.gif)
+
+[Watch the full analysis video](docs/assets/analysis-demo.mp4)
 
 These screen recordings show the prototype's upload and analysis workflow.
 
