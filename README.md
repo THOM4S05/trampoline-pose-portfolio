@@ -14,6 +14,15 @@ somersault rotation and body shape, though that part still needs work.
 useful review videos, but difficult poses can still confuse the tracker.
 The [roadmap](docs/ROADMAP.md) covers what I'd like to improve next.
 
+## Demos — Upload and analysis
+
+See the browser interface in action:
+
+- [Watch the upload demo](docs/assets/upload-demo.mp4)
+- [Watch the analysis demo](docs/assets/analysis-demo.mp4)
+
+These screen recordings show the prototype's upload and analysis workflow.
+
 ## Demo — Tuck back somersaults getting tighter
 
 ![Tuck back somersaults getting tighter, with predicted skeleton overlay](docs/assets/red-tuck-backs.gif)

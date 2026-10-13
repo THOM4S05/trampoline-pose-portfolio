@@ -11,6 +11,8 @@ __pycache__/
 .pytest_cache/
 *.mp4
 !docs/assets/red-tuck-backs.mp4
+!docs/assets/upload-demo.mp4
+!docs/assets/analysis-demo.mp4
 *.mov
 .env
 .env.*

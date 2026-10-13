@@ -14,7 +14,10 @@ PRIVATE_ROOTS = {
     'backups', 'skill-identification-handover', 'wifi-reconnect',
 }
 MEDIA = {'.mp4', '.mov', '.m4v', '.avi', '.mkv', '.webm', '.jpg', '.jpeg', '.png', '.gif'}
-APPROVED_MEDIA = {'docs/assets/red-tuck-backs.mp4', 'docs/assets/red-tuck-backs.gif'}
+APPROVED_MEDIA = {
+    'docs/assets/red-tuck-backs.mp4', 'docs/assets/red-tuck-backs.gif',
+    'docs/assets/upload-demo.mp4', 'docs/assets/analysis-demo.mp4',
+}
 PATTERNS = {
     'private key': rb'-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----',
     'GitHub token': rb'\b(?:gh[pousr]_[A-Za-z0-9]{20,}|github_pat_[A-Za-z0-9_]{20,})',
