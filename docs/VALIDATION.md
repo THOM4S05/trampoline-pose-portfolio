@@ -2,7 +2,7 @@
 
 ## Automated checks
 
-On 12 October 2026, the local checkout passed **114 Python tests and 6
+The local checkout passed **114 Python tests and 6
 JavaScript tests**. Tests use synthetic video and injected model outputs; they
 exercise application behaviour without downloading weights or requiring a GPU.
 The lightweight Python setup and synthetic demo were also verified in a new
