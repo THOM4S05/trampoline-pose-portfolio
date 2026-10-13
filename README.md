@@ -14,7 +14,7 @@ somersault rotation and body shape, though that part still needs work.
 useful review videos, but difficult poses can still confuse the tracker.
 The [roadmap](docs/ROADMAP.md) covers what I'd like to improve next.
 
-**This current version does the procoessing on a local server and the site is used as a portal, from computer or mobile.
+**This current version does the procoessing on a local server and the site is used as a portal, from computer or mobile.**
 
 ## Demos — Upload and analysis
 
