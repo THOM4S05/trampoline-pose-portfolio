@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Review three back somersaults with Trampoline Pose's skeleton overlay and measured body angles.">
+  <title>Trampoline Pose · Routine analysis</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #111817; color: #f5f9f7; font: 16px/1.55 system-ui, sans-serif; }
+    main { width: min(1060px, 100% - 40px); margin: 42px auto; }
+    header { margin-bottom: 24px; }
+    a { color: #a4ead3; }
+    h1, h2, p { margin: 0; }
+    h1 { font-size: clamp(2rem, 5vw, 3.3rem); line-height: 1.08; margin: 10px 0; }
+    h2 { font-size: 1.35rem; }
+    .layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px; align-items: start; }
+    video { display: block; width: 100%; max-height: 70vh; background: #050807; border-radius: 12px; }
+    section { background: #1b2724; border: 1px solid #354b44; padding: clamp(14px, 3vw, 24px); border-radius: 12px; }
+    .muted { color: #c0d2cc; }
+    table { width: 100%; border-collapse: collapse; margin: 12px 0; text-align: left; font-variant-numeric: tabular-nums; }
+    th, td { padding: 8px 4px; border-bottom: 1px solid #354b44; }
+    button { padding: 7px 9px; color: #e4fff5; background: #294b40; border: 1px solid #6caa94; border-radius: 6px; font: inherit; cursor: pointer; }
+    button[aria-current="true"] { background: #a4ead3; color: #122620; }
+    :focus-visible { outline: 3px solid #f6ce74; outline-offset: 3px; }
+    #selection { min-height: 1.6em; margin-bottom: 8px; }
+    @media (max-width: 720px) { main { margin-top: 24px; } .layout { grid-template-columns: 1fr; gap: 16px; } }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <a href="https://github.com/THOM4S05/trampoline-pose-portfolio">Trampoline Pose on GitHub</a>
+      <h1>Three back somersaults</h1>
+      <p class="muted">Review the predicted skeleton and see how the tuck changes from one bounce to the next.</p>
+    </header>
+    <div class="layout">
+      <video controls playsinline preload="metadata" aria-label="Trampoline routine with a predicted skeleton overlay">
+        <source src="assets/red-tuck-backs.mp4" type="video/mp4">
+      </video>
+      <section aria-labelledby="analysis-heading">
+        <h2>Flight analysis</h2>
+        <p class="muted">Select a somersault to jump to its measured shape frame.</p>
+        <table>
+          <thead><tr><th scope="col">Somersault</th><th scope="col">Hip</th><th scope="col">Knee</th></tr></thead>
+          <tbody>
+            <tr><th scope="row"><button type="button" data-time="2.32">First</button></th><td>82.7°</td><td>77.8°</td></tr>
+            <tr><th scope="row"><button type="button" data-time="3.88">Second</button></th><td>71.4°</td><td>74.0°</td></tr>
+            <tr><th scope="row"><button type="button" data-time="5.44">Third</button></th><td>27.6°</td><td>52.0°</td></tr>
+          </tbody>
+        </table>
+        <p id="selection" role="status"></p>
+        <p class="muted">The tracker estimates one backward turn and a tuck in each of these complete flights. Angles come from a side-on pose estimate and can be affected by occlusion.</p>
+      </section>
+    </div>
+  </main>
+  <script>
+    const video = document.querySelector('video');
+    const buttons = document.querySelectorAll('[data-time]');
+    const selection = document.getElementById('selection');
+    buttons.forEach(button => {
+      button.addEventListener('click', () => {
+        const time = Number(button.dataset.time);
+        video.pause();
+        video.currentTime = time;
+        buttons.forEach(item => item.removeAttribute('aria-current'));
+        button.setAttribute('aria-current', 'true');
+        selection.textContent = `${button.textContent} somersault · ${time.toFixed(2)} s`;
+      });
+    });
+  </script>
+</body>
+</html>
